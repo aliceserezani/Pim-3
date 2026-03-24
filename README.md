@@ -1,1 +1,5 @@
-Repositorio do Pim 3 e usar pro pim 4
+Desenvolvimento de plataforma web de avaliação e apoio à aprendizagem para uma empresa fictícia de tecnologia educacional.
+
+Este projeto busca integrar conceitos de engenharia de software ágil, modelagem de dados, programação orientada a objetos, desenvolvimento web responsivo, UX/UI design e análise de dados, com foco na tomada de decisão baseada em informações de desempenho dos usuários.
+
+Atualmente, empresas de tecnologia educacional buscam oferecer soluções que permitam não apenas a aplicação de avaliações, mas também o acompanhamento do desempenho dos estudantes e a geração de informações relevantes para a tomada de decisão pedagógica. A proposta deste projeto consiste na simulação de uma empresa fictícia desse setor, para a qual será desenvolvida uma plataforma web de avaliações e apoio à aprendizagem. O sistema deverá permitir a criação e aplicação de questionários, o registro de respostas e a geração de relatórios de desempenho, considerando diferentes perfis de usuários, como administradores, professores e alunos. Além disso, o projeto integrará aspectos técnicos, de usabilidade e de análise de dados, promovendo uma visão sistêmica do desenvolvimento de software em um contexto organizacional verossímil.
