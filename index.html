@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XXXXXX — Aprender, nunca foi tão fácil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & VARIABLES ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-dark:  #1a003a;
+      --purple:       #5c0fc5;
+      --purple-mid:   #7b2fdb;
+      --purple-light: #e8d5ff;
+      --purple-pale:  #f3eaff;
+      --yellow:       #f5c800;
+      --yellow-hover: #d9b000;
+      --white:        #ffffff;
+      --gray-text:    #444;
+      --font-display: 'Poppins', sans-serif;
+      --font-body:    'Nunito', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--gray-text); background: var(--white); overflow-x: hidden; }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+    input  { font-family: var(--font-body); outline: none; }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────────── */
+    .navbar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(26,0,58,0.92);
+      backdrop-filter: blur(8px);
+    }
+    .navbar-logo { font-family: var(--font-display); font-weight: 900; font-size: 1.4rem; color: var(--white); letter-spacing: 2px; }
+    .navbar-links { display: flex; gap: 2rem; align-items: center; }
+    .navbar-links a { color: #ccc; font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .navbar-links a:hover { color: var(--white); }
+    .nav-btn-login {
+      background: transparent; border: 2px solid var(--purple-mid); color: var(--white);
+      padding: .4rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: .85rem; transition: all .2s;
+    }
+    .nav-btn-login:hover { background: var(--purple-mid); }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d0020 0%, #2a006e 40%, #4a10b0 70%, #1a003a 100%);
+      display: flex; align-items: center; padding: 80px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,47,219,.4) 0%, transparent 70%);
+    }
+    .hero-content { flex: 1; z-index: 1; max-width: 520px; }
+    .hero-content h1 {
+      font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 1.2rem;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-content p {
+      color: rgba(255,255,255,.75); font-size: 1rem; line-height: 1.7;
+      margin-bottom: 2rem; animation: fadeUp .8s .15s ease both;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .8s .3s ease both; }
+    .btn-yellow {
+      background: var(--yellow); color: #1a1a1a; font-weight: 700;
+      padding: .75rem 1.8rem; border-radius: 10px; font-size: .95rem; transition: all .2s;
+    }
+    .btn-yellow:hover { background: var(--yellow-hover); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; border: 2px solid rgba(255,255,255,.5); color: var(--white);
+      padding: .75rem 1.8rem; border-radius: 10px; font-size: .95rem; font-weight: 600; transition: all .2s;
+    }
+    .btn-outline:hover { border-color: var(--white); transform: translateY(-2px); }
+    .hero-visual {
+      flex: 1; display: flex; justify-content: center; align-items: center;
+      z-index: 1; animation: fadeUp .8s .2s ease both;
+    }
+    .hero-mascot {
+      width: 280px; height: 280px;
+      background: linear-gradient(135deg, #6a1bd1, #9b4dff);
+      border-radius: 30px; display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; box-shadow: 0 20px 60px rgba(92,15,197,.5);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* ─── FEATURES ───────────────────────────────────────────────── */
+    .section-features {
+      padding: 80px 5%;
+      text-align: center;
+      background: var(--white);
+    }
+    .section-label { font-size: .8rem; font-weight: 700; letter-spacing: 3px; color: var(--purple); text-transform: uppercase; margin-bottom: .5rem; }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800; color: #1a1a1a; margin-bottom: .8rem;
+    }
+    .section-sub { color: #777; font-size: .95rem; max-width: 560px; margin: 0 auto 3.5rem; line-height: 1.6; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
+    .feature-card {
+      background: var(--purple-pale); border-radius: 18px; padding: 2rem 1.5rem;
+      text-align: center; transition: transform .25s, box-shadow .25s;
+      position: relative;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(92,15,197,.15); }
+    .feature-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: #1a1a1a; margin-bottom: .5rem; }
+    .feature-card p { font-size: .85rem; color: #666; line-height: 1.6; }
+    .feature-badge {
+      position: absolute; bottom: -12px; right: 50%; transform: translateX(50%);
+      background: var(--yellow); color: #1a1a1a; font-size: .65rem; font-weight: 700;
+      padding: .2rem .6rem; border-radius: 20px; letter-spacing: 1px;
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────────────── */
+    .section-how {
+      padding: 80px 5%; background: var(--purple-light);
+    }
+    .section-how .section-title { text-align: center; }
+    .section-how .section-sub { text-align: center; }
+    .steps-row { display: flex; align-items: flex-start; justify-content: center; gap: 0; flex-wrap: wrap; margin-top: 3rem; position: relative; }
+    .step { text-align: center; flex: 1; min-width: 160px; max-width: 220px; position: relative; }
+    .step-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--white); border: 3px solid var(--purple);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem; font-size: 2rem;
+      box-shadow: 0 6px 24px rgba(92,15,197,.15);
+    }
+    .step-connector {
+      position: absolute; top: 45px; right: -50%; width: 100%;
+      height: 3px; background: var(--purple); z-index: 0;
+    }
+    .step:last-child .step-connector { display: none; }
+    .step h4 { font-family: var(--font-display); font-weight: 700; font-size: .95rem; color: #1a1a1a; margin-bottom: .4rem; }
+    .step p  { font-size: .82rem; color: #555; line-height: 1.5; }
+
+    /* ─── CTA STRIP ──────────────────────────────────────────────── */
+    .section-cta {
+      background: linear-gradient(135deg, #1a003a, #5c0fc5);
+      padding: 80px 5%; text-align: center;
+    }
+    .section-cta h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: var(--white); margin-bottom: 2rem; line-height: 1.2; }
+    .cta-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      background: #0d0020; color: rgba(255,255,255,.55);
+      padding: 3rem 5%; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;
+    }
+    .footer-logo { font-family: var(--font-display); font-weight: 900; font-size: 1.4rem; color: var(--white); letter-spacing: 2px; margin-bottom: .5rem; }
+    .footer-desc { font-size: .82rem; max-width: 240px; line-height: 1.6; }
+    .footer-links h5 { color: var(--white); font-weight: 700; margin-bottom: .8rem; font-size: .9rem; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+    .footer-links ul li a { font-size: .82rem; color: rgba(255,255,255,.55); transition: color .2s; }
+    .footer-links ul li a:hover { color: var(--white); }
+    .footer-bottom { width: 100%; border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem; text-align: center; font-size: .78rem; }
+
+    /* ─── SOBRE PAGE ─────────────────────────────────────────────── */
+    #page-sobre { display: none; }
+    #page-home  { display: block; }
+
+    .sobre-hero {
+      background: #0d0020; color: var(--white);
+      padding: 120px 5% 60px; text-align: center;
+    }
+    .sobre-hero .chip { display: inline-block; background: var(--purple); color: var(--white); font-size: .75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: .3rem .9rem; border-radius: 20px; margin-bottom: 1.2rem; }
+    .sobre-hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; line-height: 1.2; max-width: 640px; margin: 0 auto 1.5rem; }
+    .sobre-hero blockquote {
+      background: rgba(123,47,219,.25); border-left: 4px solid var(--yellow);
+      padding: 1.2rem 2rem; border-radius: 0 12px 12px 0;
+      max-width: 600px; margin: 0 auto; font-style: italic; font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,.9);
+    }
+
+    .sobre-section { padding: 70px 5%; }
+    .sobre-section:nth-child(even) { background: var(--purple-pale); }
+
+    .sobre-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .sobre-card { background: var(--white); border-radius: 16px; padding: 1.8rem 1.5rem; }
+    .sobre-card h4 { font-family: var(--font-display); font-weight: 700; color: var(--purple); margin-bottom: .5rem; }
+    .sobre-card p  { font-size: .85rem; color: #555; line-height: 1.6; }
+
+    .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .audience-item {
+      background: var(--white); border-radius: 14px; padding: 1.2rem 1.5rem;
+      border-left: 4px solid var(--purple); font-size: .88rem; color: #333; line-height: 1.5;
+    }
+
+    .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .diff-item { background: var(--white); border-radius: 14px; padding: 1.5rem; }
+    .diff-item h4 { font-family: var(--font-display); font-weight: 700; color: #1a1a1a; margin-bottom: .4rem; }
+    .diff-item p  { font-size: .82rem; color: #666; line-height: 1.6; }
+
+    /* ─── MODALS OVERLAY ─────────────────────────────────────────── */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+    }
+    .overlay.active { display: flex; }
+
+    /* ─── MODAL LOGIN ────────────────────────────────────────────── */
+    .modal {
+      background: var(--white); border-radius: 20px; padding: 2.5rem;
+      width: min(900px, 95vw); position: relative;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+      animation: popIn .3s ease both;
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1.2rem;
+      background: none; font-size: 1.4rem; color: #999; cursor: pointer; line-height: 1;
+    }
+    .modal-close:hover { color: #333; }
+
+    /* Login left */
+    .modal-left { }
+    .modal-left p { font-size: .9rem; color: #555; line-height: 1.6; margin-bottom: 1.5rem; }
+    .btn-purple {
+      background: var(--purple); color: var(--white); font-weight: 700;
+      padding: .75rem 1.8rem; border-radius: 10px; font-size: .95rem; transition: all .2s; width: 100%;
+    }
+    .btn-purple:hover { background: var(--purple-mid); transform: translateY(-2px); }
+
+    /* Login right */
+    .modal-right { }
+    .modal-icon { text-align: center; margin-bottom: 1.5rem; }
+    .modal-icon .icon-wrap {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--purple-pale); display: inline-flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin-bottom: .5rem;
+    }
+    .modal-right h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: #1a1a1a; margin-bottom: .25rem; text-align: center; }
+    .modal-right .underline-bar { width: 48px; height: 3px; background: var(--yellow); margin: 0 auto 1.5rem; border-radius: 2px; }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: .78rem; font-weight: 700; color: var(--purple); margin-bottom: .3rem; }
+    .form-group input {
+      width: 100%; border: 1.5px solid #ddd; border-radius: 8px;
+      padding: .7rem 1rem; font-size: .9rem; color: #333; transition: border-color .2s;
+    }
+    .form-group input:focus { border-color: var(--purple); }
+
+    .modal-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 1.2rem; flex-wrap: wrap; gap: .5rem; }
+    .link-subtle { background: none; color: var(--purple); font-size: .85rem; font-weight: 600; padding: 0; }
+    .link-subtle:hover { text-decoration: underline; }
+    .btn-yellow-sm { background: var(--yellow); color: #1a1a1a; font-weight: 700; padding: .65rem 1.6rem; border-radius: 8px; font-size: .9rem; transition: all .2s; }
+    .btn-yellow-sm:hover { background: var(--yellow-hover); transform: translateY(-2px); }
+
+    /* ─── MODAL CADASTRO ─────────────────────────────────────────── */
+    .modal-cadastro {
+      background: var(--white); border-radius: 20px; padding: 2.5rem 3rem;
+      width: min(500px, 95vw); position: relative;
+      animation: popIn .3s ease both;
+    }
+    .modal-cadastro h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: #1a1a1a; margin-bottom: .25rem; }
+    .modal-cadastro .sub { font-size: .82rem; color: #777; margin-bottom: 1.5rem; }
+    .modal-cadastro .sub span { color: var(--purple); font-weight: 600; }
+    .modal-cadastro .disclaimer { font-size: .75rem; color: #888; line-height: 1.5; margin: 1rem 0; }
+    .modal-cadastro .disclaimer a { color: var(--purple); font-weight: 600; }
+    .modal-cadastro .modal-footer { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .btn-outline-purple {
+      background: transparent; border: 2px solid var(--purple); color: var(--purple);
+      padding: .65rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: .9rem; transition: all .2s;
+    }
+    .btn-outline-purple:hover { background: var(--purple); color: var(--white); }
+
+    /* ─── MODAL TROCA SENHA ──────────────────────────────────────── */
+    .modal-senha {
+      background: var(--white); border-radius: 20px; padding: 2.5rem;
+      width: min(500px, 95vw); position: relative; text-align: center;
+      animation: popIn .3s ease both;
+    }
+    .modal-senha .mascot-img { font-size: 5rem; margin-bottom: 1rem; }
+    .modal-senha h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: #1a1a1a; margin-bottom: 1.5rem; line-height: 1.4; }
+    .modal-senha .underline-bar { width: 40px; height: 3px; background: var(--yellow); margin: -.8rem auto 1.5rem; border-radius: 2px; }
+    .modal-senha .form-group { text-align: left; }
+    .modal-senha-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .btn-purple-sm {
+      background: var(--purple); color: var(--white); font-weight: 700;
+      padding: .65rem 1.6rem; border-radius: 8px; font-size: .9rem; transition: all .2s;
+    }
+    .btn-purple-sm:hover { background: var(--purple-mid); }
+
+    /* ─── KEYFRAMES ──────────────────────────────────────────────── */
+    @keyframes fadeUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes float  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes popIn  { from { opacity:0; transform: scale(.9); } to { opacity:1; transform: scale(1); } }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; text-align: center; }
+      .hero-btns { justify-content: center; }
+      .hero-mascot { width: 180px; height: 180px; font-size: 5rem; }
+      .modal { grid-template-columns: 1fr; }
+      .modal-left { display: none; }
+      .audience-grid, .diff-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="navbar-logo">XXXXXX</div>
+  <div class="navbar-links">
+    <a href="#" onclick="showPage('home')">Início</a>
+    <a href="#" onclick="showPage('sobre')">Sobre</a>
+    <button class="nav-btn-login" onclick="openModal('modal-login')">Entrar</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════════════ -->
+<div id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Aprender, nunca foi tão fácil</h1>
+      <p>Aprenda tecnologia de um jeito novo — descubra e gerencie e interativamente com uma experiência única e divertida, feita para você.</p>
+      <div class="hero-btns">
+        <button class="btn-yellow" onclick="openModal('modal-login')">Continuar →</button>
+        <button class="btn-outline" onclick="openModal('modal-login')">Continuar mais</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mascot">🖥️</div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section-features">
+    <div class="section-label">Diversão e Aprendizado</div>
+    <h2 class="section-title">Diversão e Aprendizado em um lugar só</h2>
+    <p class="section-sub">Torne seu aprendizado mais dinâmico, interativo e prazeroso. Nossa plataforma foi projetada para você aprender mais e melhor.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Fácil e Rápido</h3>
+        <p>Conteúdo em pedaços menores, transformados em desafios que você completa no seu ritmo.</p>
+        <span class="feature-badge">✦</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Pontos e Medalhas</h3>
+        <p>Sistema de gamificação que premia sua evolução a cada conquista alcançada.</p>
+        <span class="feature-badge">✦</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Certificados</h3>
+        <p>Comprove seu progresso com certificados de conclusão reconhecidos no mercado.</p>
+        <span class="feature-badge">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section-how">
+    <div class="section-label">Como funciona?</div>
+    <h2 class="section-title">Em 3 passos simples</h2>
+    <p class="section-sub">Você cadastra e configura sua conta, escolhe uma matéria e entra jogando.</p>
+
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-circle">👤</div>
+        <div class="step-connector"></div>
+        <h4>Crie sua conta</h4>
+        <p>Cadastre-se em segundos e personalize seu perfil de aprendizado.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">📖</div>
+        <div class="step-connector"></div>
+        <h4>Escolha uma matéria</h4>
+        <p>Trilhas geradas por IA para suporte técnico imediato ao seu objetivo.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">🕹️</div>
+        <h4>Estude jogando</h4>
+        <p>Aprenda enquanto se diverte com desafios, missões e conquistas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="section-cta">
+    <h2>Pronto para começar<br>a sua jornada?</h2>
+    <div class="cta-btns">
+      <button class="btn-yellow" onclick="openModal('modal-login')">Já tenho minha conta</button>
+      <button class="btn-outline" onclick="openModal('modal-cadastro')">Criar minha conta</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-logo">XXXXXX</div>
+      <p class="footer-desc">Plataforma de aprendizado gamificado em tecnologia para a nova geração.</p>
+    </div>
+    <div class="footer-links">
+      <h5>Navegação</h5>
+      <ul>
+        <li><a href="#" onclick="showPage('home')">Início</a></li>
+        <li><a href="#" onclick="showPage('sobre')">Sobre</a></li>
+        <li><a href="#" onclick="openModal('modal-login')">Entrar</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacidade</a></li>
+        <li><a href="#">Termos de Uso</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">© 2026 XXXXXX · Todos os direitos reservados</div>
+  </footer>
+
+</div><!-- /page-home -->
+
+
+<!-- ════════════════════════════════════════════════
+     PAGE: SOBRE
+════════════════════════════════════════════════ -->
+<div id="page-sobre">
+
+  <!-- Hero -->
+  <section class="sobre-hero">
+    <span class="chip">QUEM SOMOS</span>
+    <h1>Aprender tecnologia de um jeito novo, interativo e feito para você</h1>
+    <br>
+    <blockquote>
+      "Nossa missão é democratizar o ensino de tecnologia para uma nova geração — de forma divertida, acessível e animada."
+    </blockquote>
+  </section>
+
+  <!-- O que fazemos -->
+  <section class="sobre-section">
+    <div class="section-label">o que fazemos</div>
+    <h2 class="section-title">Nossa plataforma, seus superpoderes</h2>
+    <div class="sobre-features">
+      <div class="sobre-card">
+        <h4>Trilha dos desafios</h4>
+        <p>Mapa de progressão com trilhas desbloqueáveis por patentes e conquistas do aluno.</p>
+      </div>
+      <div class="sobre-card">
+        <h4>Hub aulas</h4>
+        <p>Textos gerados por IA para suporte técnico imediato sobre qualquer tema da trilha.</p>
+      </div>
+      <div class="sobre-card">
+        <h4>Perfil</h4>
+        <p>Perfil, insígnias, pontuação e acompanhamento de desempenho detalhado do seu aprendizado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para quem é -->
+  <section class="sobre-section">
+    <div class="section-label">Para quem é</div>
+    <div class="audience-grid">
+      <div class="audience-item">Estudantes de 15–30 anos querendo aprender programação de forma menos rígida.</div>
+      <div class="audience-item">Pessoas em transição de carreira buscando entrar no mercado tech.</div>
+      <div class="audience-item">Quem já sabe programar e quer um reforço interativo e dinâmico.</div>
+      <div class="audience-item">Entusiastas de tecnologia que preferem aprender no próprio ritmo.</div>
+    </div>
+  </section>
+
+  <!-- Por que somos diferentes -->
+  <section class="sobre-section">
+    <div class="section-label">Porque somos diferentes</div>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <h4>Microlearning gamificado</h4>
+        <p>Conteúdos transformados em desafios curtos — como o Duolingo faz com idiomas, fazemos com tecnologia.</p>
+      </div>
+      <div class="diff-item">
+        <h4>Feito para a nova geração</h4>
+        <p>Inspirado no consumo de conteúdo nativo que a nova geração gosta: direto, sem aula e texto longo.</p>
+      </div>
+      <div class="diff-item">
+        <h4>Competição saudável</h4>
+        <p>Sistema de pontos e missões que gera engajamento e competição sana entre estudantes de maneira construtiva.</p>
+      </div>
+    </div>
+    <br><br>
+    <div style="text-align:center">
+      <button class="btn-purple" style="max-width:240px;margin:0 auto;" onclick="showPage('home')">← Voltar para Início</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <div class="footer-logo">XXXXXX</div>
+      <p class="footer-desc">Plataforma de aprendizado gamificado em tecnologia para a nova geração.</p>
+    </div>
+    <div class="footer-links">
+      <h5>Navegação</h5>
+      <ul>
+        <li><a href="#" onclick="showPage('home')">Início</a></li>
+        <li><a href="#" onclick="showPage('sobre')">Sobre</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">© 2026 XXXXXX · Todos os direitos reservados</div>
+  </footer>
+</div><!-- /page-sobre -->
+
+
+<!-- ════════════════════════════════════════════════
+     OVERLAY: LOGIN
+════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-login" onclick="overlayClick(event,'modal-login')">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('modal-login')">✕</button>
+
+    <!-- Lado esquerdo -->
+    <div class="modal-left">
+      <p>Ainda não tem uma conta?<br>Comece agora e tenha acesso a materiais incríveis sobre programação e uma maneira fácil de aprendizado.</p>
+      <button class="btn-purple" onclick="closeModal('modal-login'); openModal('modal-cadastro')">Criar Cadastro</button>
+    </div>
+
+    <!-- Lado direito -->
+    <div class="modal-right">
+      <div class="modal-icon">
+        <div class="icon-wrap">👤🔒</div>
+      </div>
+      <h2>Faça seu Login?</h2>
+      <div class="underline-bar"></div>
+
+      <div class="form-group">
+        <label>Nome de Usuário</label>
+        <input type="text" placeholder="Nome de Usuário" />
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" placeholder="••••••••••••••" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="link-subtle" onclick="closeModal('modal-login'); openModal('modal-senha-1')">Esqueceu a Senha?</button>
+        <button class="btn-yellow-sm">Entrar!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     OVERLAY: CADASTRO
+════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-cadastro" onclick="overlayClick(event,'modal-cadastro')">
+  <div class="modal-cadastro" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('modal-cadastro')">✕</button>
+
+    <h2>Comece a usar o XXXXXXXXXX</h2>
+    <p class="sub">Insira os dados para ter acesso à plataforma. Ou entre com <span>email@digital.gmail.com</span></p>
+
+    <div class="form-group">
+      <label>Nome</label>
+      <input type="text" placeholder="Nome de Usuário" />
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" placeholder="Senha de Usuário" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="Email@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Level (Nível)</label>
+      <input type="text" placeholder="Nível" />
+    </div>
+    <div class="form-group">
+      <label>Confirmação da Senha</label>
+      <input type="password" placeholder="Confirmação da Senha" />
+    </div>
+
+    <p class="disclaimer">
+      Ao continuar, você concorda em permitir que esta plataforma processe seus dados de acordo com as políticas aplicáveis.
+      Ao clicar em <strong>Criar Conta</strong>, você concorda com nossos <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>.
+    </p>
+
+    <div class="modal-footer">
+      <button class="btn-outline-purple" onclick="closeModal('modal-cadastro'); openModal('modal-login')">Fazer login</button>
+      <button class="btn-yellow-sm">Criar Conta</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     OVERLAY: TROCA SENHA — PASSO 1 (Email)
+════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-senha-1" onclick="overlayClick(event,'modal-senha-1')">
+  <div class="modal-senha" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('modal-senha-1')">✕</button>
+    <div class="mascot-img">🖥️</div>
+
+    <div class="form-group">
+      <label>Informe Seu Email</label>
+      <input type="email" placeholder="Email" />
+    </div>
+
+    <h3>Tem certeza mesmo dessa resposta?</h3>
+    <div class="underline-bar"></div>
+
+    <div class="modal-senha-actions">
+      <button class="btn-purple-sm" onclick="closeModal('modal-senha-1'); openModal('modal-login')">Não, Quero voltar</button>
+      <button class="btn-yellow-sm" onclick="closeModal('modal-senha-1'); openModal('modal-senha-2')">Sim!</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     OVERLAY: TROCA SENHA — PASSO 2 (Código)
+════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-senha-2" onclick="overlayClick(event,'modal-senha-2')">
+  <div class="modal-senha" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('modal-senha-2')">✕</button>
+    <div class="mascot-img">🖥️</div>
+
+    <div class="form-group">
+      <label>Código enviado no Email</label>
+      <input type="text" placeholder="Código" />
+    </div>
+
+    <h3>Tem certeza mesmo dessa resposta?</h3>
+    <div class="underline-bar"></div>
+
+    <div class="modal-senha-actions">
+      <button class="btn-purple-sm" onclick="closeModal('modal-senha-2'); openModal('modal-senha-1')">Não, Quero voltar</button>
+      <button class="btn-yellow-sm" onclick="closeModal('modal-senha-2'); openModal('modal-senha-3')">Sim!</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     OVERLAY: TROCA SENHA — PASSO 3 (Nova Senha)
+════════════════════════════════════════════════ -->
+<div class="overlay" id="modal-senha-3" onclick="overlayClick(event,'modal-senha-3')">
+  <div class="modal-senha" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('modal-senha-3')">✕</button>
+    <div class="mascot-img">🖥️</div>
+
+    <div class="form-group">
+      <label>Nova Senha</label>
+      <input type="password" placeholder="Nova Senha" />
+    </div>
+    <div class="form-group" style="margin-top:.8rem">
+      <label>Confirmação da Nova Senha</label>
+      <input type="password" placeholder="Confirmação do Nome" />
+    </div>
+
+    <h3>Tem certeza mesmo dessa decisão?</h3>
+    <div class="underline-bar"></div>
+
+    <div class="modal-senha-actions">
+      <button class="btn-purple-sm" onclick="closeModal('modal-senha-3'); openModal('modal-senha-2')">Não, Quero voltar</button>
+      <button class="btn-yellow-sm" onclick="closeModal('modal-senha-3'); openModal('modal-login')">Sim, tenho!</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+  /* Page switcher */
+  function showPage(name) {
+    document.getElementById('page-home').style.display  = name === 'home'  ? 'block' : 'none';
+    document.getElementById('page-sobre').style.display = name === 'sobre' ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* Modal helpers */
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  }
+  function overlayClick(e, id) {
+    if (e.target === document.getElementById(id)) closeModal(id);
+  }
+
+  /* Keyboard: Esc closes any open modal */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.overlay.active').forEach(el => el.classList.remove('active'));
+    }
+  });
+
+  /* Scroll-reveal (lightweight Intersection Observer) */
+  const revealEls = document.querySelectorAll('.feature-card, .step, .sobre-card, .audience-item, .diff-item');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp .6s ease both';
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
