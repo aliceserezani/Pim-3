@@ -1,0 +1,123 @@
+-- ============================================================
+--  Plataforma de Aprendizagem - Microsoft SQL Server
+-- ============================================================
+
+-- 1. Tabelas Independentes
+
+CREATE TABLE Usuario (
+    id_usuario  INT IDENTITY(1,1) PRIMARY KEY,
+    nome        VARCHAR(100),
+    email       VARCHAR(100) UNIQUE,
+    senha       VARCHAR(255),
+    data_nascimento DATE
+);
+
+CREATE TABLE SistemaMetricas (
+    id_metrica          INT IDENTITY(1,1) PRIMARY KEY,
+    data                DATE,
+    total_usuarios      INT,
+    media_engajamento   DECIMAL(5,2),
+    taxa_conversao      DECIMAL(5,2)
+);
+
+CREATE TABLE TrilhaAprendizagem (
+    id_trilha   INT IDENTITY(1,1) PRIMARY KEY,
+    nome_trilha VARCHAR(100),
+    descricao   VARCHAR(MAX)
+);
+
+-- ============================================================
+-- 2. Entidades que dependem de Usuario
+-- ============================================================
+
+CREATE TABLE Professor (
+    id_professor        INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario          INT NOT NULL,
+    especialidade       VARCHAR(100),
+    criador_conteudo    BIT,                          -- BIT substitui BOOLEAN
+    CONSTRAINT FK_Professor_Usuario
+        FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+);
+
+CREATE TABLE Aluno (
+    id_aluno            INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario          INT NOT NULL,
+    pontos_acumulados   INT,
+    streak_atual        INT,
+    CONSTRAINT FK_Aluno_Usuario
+        FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+);
+
+CREATE TABLE Admin (
+    id_admin    INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario  INT NOT NULL,
+    CONSTRAINT FK_Admin_Usuario
+        FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================================================
+-- 3. Entidades com dependências múltiplas
+-- ============================================================
+
+CREATE TABLE TicketSuporte (
+    id_ticket               INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario_solicitante  INT NOT NULL,
+    id_usuario_destinatario INT NOT NULL,
+    assunto                 VARCHAR(150),
+    descricao               VARCHAR(MAX),
+    status                  VARCHAR(20),
+    data_abertura           DATETIME,                 -- DATETIME substitui TIMESTAMP
+    CONSTRAINT FK_Ticket_Solicitante
+        FOREIGN KEY (id_usuario_solicitante) REFERENCES Usuario(id_usuario),
+    CONSTRAINT FK_Ticket_Destinatario
+        FOREIGN KEY (id_usuario_destinatario) REFERENCES Usuario(id_usuario)
+);
+
+CREATE TABLE Materia (
+    id_materia          INT IDENTITY(1,1) PRIMARY KEY,
+    id_professor        INT NOT NULL,
+    id_trilha           INT NOT NULL,
+    titulo              VARCHAR(100),
+    tipo                VARCHAR(50),
+    status_aprovacao    VARCHAR(20),
+    CONSTRAINT FK_Materia_Professor
+        FOREIGN KEY (id_professor) REFERENCES Professor(id_professor),
+    CONSTRAINT FK_Materia_Trilha
+        FOREIGN KEY (id_trilha) REFERENCES TrilhaAprendizagem(id_trilha)
+);
+
+CREATE TABLE Aluno_Trilha (
+    id_Alu_Tri  INT IDENTITY(1,1) PRIMARY KEY,
+    id_aluno    INT NOT NULL,
+    id_trilha   INT NOT NULL,
+    progresso   DECIMAL(5,2),
+    data_inicio DATE,
+    CONSTRAINT FK_AlunoTrilha_Aluno
+        FOREIGN KEY (id_aluno) REFERENCES Aluno(id_aluno),
+    CONSTRAINT FK_AlunoTrilha_Trilha
+        FOREIGN KEY (id_trilha) REFERENCES TrilhaAprendizagem(id_trilha)
+);
+
+-- ============================================================
+-- 4. Tabelas de Nível Inferior
+-- ============================================================
+
+CREATE TABLE Aula (
+    id_aula     INT IDENTITY(1,1) PRIMARY KEY,
+    id_materia  INT NOT NULL,
+    titulo      VARCHAR(100),
+    conteudo    VARCHAR(MAX),
+    CONSTRAINT FK_Aula_Materia
+        FOREIGN KEY (id_materia) REFERENCES Materia(id_materia)
+);
+
+CREATE TABLE Aluno_Aula (
+    id_Alu_Aula         INT IDENTITY(1,1) PRIMARY KEY,
+    id_aluno            INT NOT NULL,
+    id_aula             INT NOT NULL,
+    progresso_concluido BIT,                          -- BIT substitui BOOLEAN
+    CONSTRAINT FK_AlunoAula_Aluno
+        FOREIGN KEY (id_aluno) REFERENCES Aluno(id_aluno),
+    CONSTRAINT FK_AlunoAula_Aula
+        FOREIGN KEY (id_aula) REFERENCES Aula(id_aula)
+);
